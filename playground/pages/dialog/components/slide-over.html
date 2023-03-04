@@ -23,21 +23,22 @@
 
         return {
             products,
-            open: true,
+            open: false,
             auto: true,
             init() {
                 $vui.effect(() => {
                     if (this.open === false && this.auto) {
-                        setTimeout(() => {
-                            if (this.auto) this.open = true
-                        }, 2000)
+                        // if (this.auto) this.open = true
+                        // setTimeout(() => {
+                        //     if (this.auto) this.open = true
+                        // }, 2000)
                     }
                 })
             }
         }
     }
 </script>
-<template x-component:page="dialog-slide-over" x-import="hui:dialog,switch" x-data="setupDialogSlideOverData()">
+<template x-component:dialog="slide-over" x-import="hui:dialog,switch" x-data="setupDialogSlideOverData()">
     <div class="p-12">
     <hui-switch-group class="flex items-center space-x-4">
         <hui-switch-label>Open dialog automatically</hui-switch-label>
@@ -97,4 +98,11 @@
             </div>
         </div>
     </hui-dialog>
+    <script>
+        return {
+            onMounted() {
+                this.$dispatch("subcomponentisready", "dialog:slide-over");
+            },
+        };
+    </script>
 </template>

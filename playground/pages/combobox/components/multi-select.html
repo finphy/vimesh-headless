@@ -36,8 +36,8 @@
         }
     }
 </script>
-<template x-component:page="combobox-multi-select" x-import="hui:combobox" x-data="setupComboboxMultiSelectData()">
-    <div class="flex h-full w-full justify-center space-x-4 bg-gray-50 p-12">
+<template x-component:combobox="multi-select" x-import="hui:combobox" x-data="setupComboboxMultiSelectData()">
+    <div class="flex w-full justify-center space-x-4 bg-gray-50 p-12">
         <div class="w-full max-w-4xl">
             <div class="space-y-1">
                 <form @submit="onSubmit">
@@ -114,4 +114,11 @@
             </div>
         </div>
     </div>
+    <script>
+      return {
+        onMounted() {
+          this.$dispatch("subcomponentisready", "combobox:multi-select");
+        },
+      };
+    </script>
 </template>

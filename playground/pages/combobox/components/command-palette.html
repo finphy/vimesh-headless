@@ -25,9 +25,9 @@
         }
     }
 </script>
-<template x-component:page="combobox-command-palette" x-import="hui:combobox"
+<template x-component:combobox="command-palette" x-import="hui:combobox"
     x-data="setupComboboxCommandPaletteData()">
-    <div class=" flex h-full w-full justify-center bg-gray-50 p-12">
+    <div class="flex w-full justify-center bg-gray-50 p-12">
         <div class="mx-auto w-full max-w-lg">
             <div class="space-y-1">
                 <hui-combobox x-model="activePerson"
@@ -92,4 +92,11 @@
             </div>
         </div>
     </div>
+    <script>
+      return {
+        onMounted() {
+          this.$dispatch("subcomponentisready", "combobox:command-palette");
+        },
+      };
+    </script>
 </template>

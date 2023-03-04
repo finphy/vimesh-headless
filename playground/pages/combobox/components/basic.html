@@ -26,8 +26,8 @@
         }
     }
 </script>
-<template x-component:page="combobox-basic" x-import="hui:combobox" x-data="setupComboboxBasicData()">
-    <div class="h-full justify-center bg-gray-50 p-12">
+<template x-component:combobox="basic" x-import="hui:combobox" x-data="setupComboboxBasicData()">
+    <div class="justify-center bg-gray-50 p-12">
         <div class="mx-auto w-full max-w-xs">
             <div class="py-8 font-mono text-xs">
                 Selected person: <span x-text="activePerson && activePerson.name || 'Nobody yet'"></span>
@@ -90,4 +90,11 @@
             </div>
         </div>
     </div>
+    <script>
+      return {
+        onMounted() {
+          this.$dispatch("subcomponentisready", "combobox:basic");
+        },
+      };
+    </script>
 </template>

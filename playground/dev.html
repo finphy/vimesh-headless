@@ -1,6 +1,9 @@
 <head>
     <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
-
+    <link
+        rel="stylesheet"
+        href="https://unicons.iconscout.com/release/v2.0.0/css/unicons.css"
+    />
     <script src="/node_modules/@vimesh/style/dist/vs.dev.js"></script>
     <script src="/node_modules/@vimesh/ui/dist/vui.dev.js"></script>
     <script src="/node_modules/alpinejs/dist/cdn.js" defer></script>
@@ -18,26 +21,17 @@
         let root = {
             $route: {},
             get isHome() { return this.$route.page === 'home' },
+            categories: [['Home', 'home'], ['Components', 'toggle-off']],
             routes: [
-                { name: 'Home', path: '/index', page: 'home' },
-                { name: 'Listbox', path: '/listbox/basic', page: 'listbox/basic' },
-                { name: 'Listbox Multi Select', path: '/listbox/multi-select', page: 'listbox/multi-select' },
-                { name: 'Listbox Multi Elements', path: '/listbox/multi-elements', page: 'listbox/multi-elements' },
-                { name: 'Radio Group', path: '/radio-group/basic', page: 'radio-group/basic' },
-                { name: 'Switch', path: '/switch/basic', page: 'switch/basic' },
-                { name: 'Tabs', path: '/tabs/basic', page: 'tabs/basic' },
-                { name: 'Combobox', path: '/combobox/basic', page: 'combobox/basic' },
-                { name: 'Combobox Multi Select', path: '/combobox/multi-select', page: 'combobox/multi-select' },
-                { name: 'Combobox Command Palette', path: '/combobox/command-palette', page: 'combobox/command-palette' },
-                { name: 'Combobox Command Palette with Group', path: '/combobox/command-palette-group', page: 'combobox/command-palette-group' },
-                { name: 'Menu', path: '/menu/basic', page: 'menu/basic' },
-                { name: 'Menu Multiple Elements', path: '/menu/multiple-elements', page: 'menu/multiple-elements' },
-                { name: 'Menu with Popper', path: '/menu/with-popper', page: 'menu/with-popper' },
-                { name: 'Menu with Transition', path: '/menu/with-transition', page: 'menu/with-transition' },
-                { name: 'Menu with Transition and Popper', path: '/menu/with-transition-and-popper', page: 'menu/with-transition-and-popper' },
-                { name: 'Popover', path: '/popover/basic', page: 'popover/basic' },
-                { name: 'Dialog', path: '/dialog/basic', page: 'dialog/basic' },
-                { name: 'Dialog with Slide Over', path: '/dialog/slide-over', page: 'dialog/slide-over' },
+                { name: 'Home', path: '/index', page: 'home', category: 'Home' },
+                { name: 'Listbox', path: '/listbox/index', page: 'listbox/index', category: 'Components' },
+                { name: 'Radio Group', path: '/radio-group/basic', page: 'radio-group/basic', category: 'Components'  },
+                { name: 'Switch', path: '/switch/basic', page: 'switch/basic', category: 'Components'  },
+                { name: 'Tabs', path: '/tabs/basic', page: 'tabs/basic', category: 'Components' },
+                { name: 'Combobox', path: '/combobox/index', page: 'combobox/index', category: 'Components'  },
+                { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
+                { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
+                { name: 'Dialog', path: '/dialog/index', page: 'dialog/index', category: 'Components'  },
                 { name: 'Something Wrong!', path: '(.*)', page: 'home', hidden: true }
             ]
         }
@@ -51,13 +45,19 @@
 
 <body x-cloak x-import="app:header,side-menu,code-viewer,key-caster"
     class="h-full w-full font-sans text-gray-900 antialiased flex flex-col" x-data="root">
-    <app-header class="flex-none h-16 px-1 py-3 flex"></app-header>
+    <app-header class="flex-none h-16 px-4 py-4 flex"></app-header>
     <div class="flex-1 flex">
         <app-side-menu class="w-74 flex-none" x-show="!isHome"></app-side-menu>
-        <div class="flex-1 h-full flex flex-col overflow-hidden">
-            <app-router-view class="flex-1"></app-router-view>
-            <app-code-viewer x-show="!isHome" class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md"
+        <div class="h-full overflow-auto p-3"  style="height: calc(100vh - 60px);">
+            <app-router-view></app-router-view>
+
+            <div class="mb-8">
+                <div class="text-4xl pb-2">Page</div>
+                <hr class="text-gray-400" />
+                <app-code-viewer x-show="!isHome" class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 my-4 text-sm"
                 language="html" :code="$route.code"></app-code-viewer>
+            </div>
+  
         </div>
     </div>
     <app-key-caster></app-key-caster>

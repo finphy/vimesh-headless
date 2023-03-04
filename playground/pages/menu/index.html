@@ -1,0 +1,97 @@
+<script>
+  $vui.config.importMap = {
+    menu:
+      "./pages/${path}menu/components/${component}.html" +
+      (DEBUG ? "?v=" + new Date().valueOf() : "?v=0.1"),
+    ...$vui.config.importMap,
+  };
+</script>
+
+<template
+  x-component:page="menu-index"
+  x-import="app:code-viewer;menu:basic,multiple-elements,with-popper,with-transition,with-transition-and-popper"
+  x-data="{codes: {}}"
+>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">Basic</div>
+    <hr class="text-gray-400" />
+    <div><menu-basic /></div>
+
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['menu:basic']"
+    ></app-code-viewer>
+  </div>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">Multiple Elements</div>
+    <hr class="text-gray-400" />
+    <div><menu-multiple-elements /></div>
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['menu:multiple-elements']"
+    ></app-code-viewer>
+  </div>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">With Popper</div>
+    <hr class="text-gray-400" />
+    <div><menu-with-popper /></div>
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['menu:with-popper']"
+    ></app-code-viewer>
+  </div>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">With Transition</div>
+    <hr class="text-gray-400" />
+    <div><menu-with-transition /></div>
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['menu:with-transition']"
+    ></app-code-viewer>
+  </div>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">With Transition And Popper</div>
+    <hr class="text-gray-400" />
+    <div><menu-with-transition-and-popper /></div>
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['menu:with-transition-and-popper']"
+    ></app-code-viewer>
+  </div>
+  <script>
+    return {
+      onMounted() {
+        function setCodes(subcomponent) {
+          $vui._.each($vui.imports, (meta) => {
+            if (subcomponent.detail === meta.fullname)
+              this.codes[meta.fullname] = meta.html;
+          });
+        }
+        window.addEventListener("subcomponentisready", setCodes.bind(this));
+      },
+    };
+  </script>
+</template>
+
+<template x-component:app.unwrap="menu-item">
+  <hui-menu-item>
+    <a
+      tabindex="-1"
+      :href="$prop('href')"
+      :class="[
+        'flex justify-between w-full text-left px-4 py-2 text-sm leading-5',
+        active ? 'bg-indigo-500 text-white' : 'text-gray-700',
+        disabled ? 'cursor-not-allowed opacity-50' : '']"
+    >
+      <span :class="active ? 'font-bold' : '' ">
+        <slot></slot>
+      </span>
+      <kbd :class="['font-sans', active ? 'text-indigo-50' : '']">⌘K</kbd>
+    </a>
+  </hui-menu-item>
+</template>

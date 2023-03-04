@@ -1,5 +1,5 @@
-<template x-component:page="menu-multiple-elements" x-import="hui:menu">
-    <div class="flex h-full w-screen justify-center space-x-4 bg-gray-50 p-12">
+<template x-component:menu="multiple-elements" x-import="hui:menu">
+    <div class="flex w-screen justify-center space-x-4 bg-gray-50 p-12">
         <div class="relative inline-block text-left">
             <hui-menu>
                 <span class="rounded-md shadow-sm">
@@ -108,4 +108,11 @@
             </hui-menu>
         </div>
     </div>
+    <script>
+      return {
+        onMounted() {
+          this.$dispatch("subcomponentisready", "menu:multiple-elements");
+        },
+      };
+    </script>
 </template>

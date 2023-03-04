@@ -1,5 +1,5 @@
-<template x-component:page="menu-basic" x-import="hui:menu">
-    <div class="flex h-full w-full justify-center bg-gray-50 p-12">
+<template x-component:menu="basic" x-import="hui:menu">
+    <div class="flex w-full justify-center bg-gray-50 p-12">
         <div class="relative inline-block text-left">
             <hui-menu>
                 <span class="rounded-md shadow-sm">
@@ -35,18 +35,11 @@
             </hui-menu>
         </div>
     </div>
-</template>
-
-<template x-component:app.unwrap="menu-item">
-    <hui-menu-item>
-        <a tabindex="-1" :href="$prop('href')" :class="[
-        'flex justify-between w-full text-left px-4 py-2 text-sm leading-5',
-        active ? 'bg-indigo-500 text-white' : 'text-gray-700',
-        disabled ? 'cursor-not-allowed opacity-50' : '']">
-            <span :class="active ? 'font-bold' : '' ">
-                <slot></slot>
-            </span>
-            <kbd :class="['font-sans', active ? 'text-indigo-50' : '']">⌘K</kbd>
-        </a>
-    </hui-menu-item>
+    <script>
+        return {
+          onMounted() {
+            this.$dispatch("subcomponentisready", "menu:basic");
+          },
+        };
+    </script>
 </template>

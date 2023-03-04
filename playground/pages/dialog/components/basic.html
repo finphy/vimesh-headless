@@ -31,7 +31,7 @@
         }
     }
 </script>
-<template x-component:page="dialog-basic" x-import="hui:dialog,menu" x-data="setupDialogBasicData()"
+<template x-component:dialog="basic" x-import="hui:dialog,menu" x-data="setupDialogBasicData()"
     class="overflow-y-auto">
     <template x-for="i in Array(3)
     .fill(null)
@@ -166,6 +166,13 @@
             </div>
         </div>
     </hui-dialog>
+    <script>
+        return {
+            onMounted() {
+            this.$dispatch("subcomponentisready", "dialog:basic");
+            },
+        };
+    </script>
 </template>
 
 <template x-component:dialog.unwrap="menu-item">
