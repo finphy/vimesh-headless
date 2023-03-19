@@ -7,9 +7,12 @@
     <script src="/node_modules/@vimesh/style/dist/vs.dev.js"></script>
     <script src="/node_modules/@vimesh/ui/dist/vui.dev.js"></script>
     <script src="/node_modules/alpinejs/dist/cdn.js" defer></script>
+    <script src="/node_modules/@alpinejs/collapse/dist/cdn.js"></script>
     <script src="/node_modules/universal-router/universal-router.min.js"></script>
-
-
+    <script src="/node_modules/dayjs/plugin/localeData.js"></script>
+    <script src="/node_modules/dayjs/dayjs.min.js"></script>
+    <script src="/node_modules/dayjs/locale/zh-cn.js"></script>
+    
     <script>
         const DEBUG = true
         $vui.config.debug = DEBUG
@@ -32,9 +35,13 @@
                 { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
                 { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
                 { name: 'Dialog', path: '/dialog/index', page: 'dialog/index', category: 'Components'  },
+                { name: 'Datepicker', path: '/datepicker/index', page: 'datepicker/index', category: 'Components' },
                 { name: 'Something Wrong!', path: '(.*)', page: 'home', hidden: true }
             ]
         }
+
+        dayjs.extend(dayjs_plugin_localeData);
+        dayjs.locale('zh-cn');
     </script>
     <style>
         [x-cloak] {
@@ -52,7 +59,7 @@
             <app-router-view></app-router-view>
 
             <div class="mb-8">
-                <div class="text-4xl pb-2">Page</div>
+                <div x-show="!isHome" class="text-4xl pb-2">Page</div>
                 <hr class="text-gray-400" />
                 <app-code-viewer x-show="!isHome" class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 my-4 text-sm"
                 language="html" :code="$route.code"></app-code-viewer>

@@ -1,0 +1,54 @@
+<script src="https://unpkg.com/@popperjs/core@2"></script>
+<script>
+  function setupData() {
+    return {
+      value: "Select date",
+      trigger1: null,
+      container1: null,
+      init() {
+        $vui.effect(() => {
+          if (!this.trigger1 || !this.container1) return;
+          Popper.createPopper(this.trigger1, this.container1, {
+            placement: "bottom-start",
+            strategy: "fixed",
+          });
+        });
+      },
+    };
+  }
+</script>
+<template
+  x-component:datepicker="with-input"
+  x-import="hui:popover;datepicker:use-dayjs"
+  x-data="setupData()"
+  x-init="[init()]"
+>
+  <div class="p-12">
+    <hui-popover class="relative">
+      <hui-popover-button
+        x-init="trigger1=$el"
+        class="border-2 border-transparent bg-gray-300 px-3 py-2 focus:border-blue-900 focus:outline-none"
+      >
+        <span x-text="value"></span>
+      </hui-popover-button>
+      <hui-popover-panel
+        x-init="container1=$el"
+        focus
+        class="absolute flex flex-col border-2 border-blue-900 bg-gray-100"
+      >
+        <div class="px-4" @click.away="$dispatch('close')">
+          <datepicker-use-dayjs
+            @change="value = $event.detail.text; $dispatch('close');"
+          ></datepicker-use-dayjs>
+        </div>
+      </hui-popover-panel>
+    </hui-popover>
+  </div>
+  <script>
+    return {
+      onMounted() {
+        this.$dispatch("subcomponentisready", "datepicker:with-input");
+      },
+    };
+  </script>
+</template>

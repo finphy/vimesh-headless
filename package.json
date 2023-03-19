@@ -7,7 +7,10 @@
   "scripts": {
     "dev": "http-server"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@alpinejs/collapse": "^3.11.1",
+    "dayjs": "^1.11.7"
+  },
   "devDependencies": {
     "@vimesh/style": "^1.0.5",
     "@vimesh/ui": "^0.12.4",

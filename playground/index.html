@@ -7,8 +7,12 @@
     <script src="https://unpkg.com/@vimesh/style"></script>
     <script src="https://unpkg.com/@vimesh/ui"></script>
     <script src="https://unpkg.com/alpinejs" defer></script>
+    <script src="https://unpkg.com/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/universal-router/universal-router.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/localeData.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/locale/zh-cn.js"></script>
+    
     <script>
         const DEBUG = false
         $vui.config.debug = DEBUG
@@ -31,9 +35,13 @@
                 { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
                 { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
                 { name: 'Dialog', path: '/dialog/index', page: 'dialog/index', category: 'Components'  },
+                { name: 'Datepicker', path: '/datepicker/index', page: 'datepicker/index', category: 'Components' },
                 { name: 'Something Wrong!', path: '(.*)', page: 'home', hidden: true }
             ]
         }
+
+        dayjs.extend(dayjs_plugin_localeData);
+        dayjs.locale('zh-cn');
     </script>
     <style>
         [x-cloak] {

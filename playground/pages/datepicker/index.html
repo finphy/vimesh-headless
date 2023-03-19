@@ -1,0 +1,64 @@
+<script>
+  $vui.config.importMap = {
+    datepicker:
+      "./pages/${path}datepicker/components/${component}.html" +
+      (DEBUG ? "?v=" + new Date().valueOf() : "?v=0.1"),
+    ...$vui.config.importMap,
+  };
+</script>
+
+<template
+  x-component:page="datepicker-index"
+  x-import="app:code-viewer;datepicker:basic,use-dayjs,with-input"
+  x-data="{codes: {}}"
+>
+  <div class="mb-8">
+    <div class="text-4xl pb-2">Basic</div>
+    <hr class="text-gray-400" />
+    <div class="p-4"><datepicker-basic /></div>
+
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['datepicker:basic']"
+    ></app-code-viewer>
+  </div>
+
+  <div class="mb-8">
+    <div class="text-4xl pb-2">With Dayjs</div>
+    <hr class="text-gray-400" />
+    <div class="p-4"><datepicker-use-dayjs /></div>
+
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['datepicker:use-dayjs']"
+    ></app-code-viewer>
+  </div>
+
+  <div class="mb-8">
+    <div class="text-4xl pb-2">With Dayjs & Popover</div>
+    <hr class="text-gray-400" />
+    <div><datepicker-with-input /></div>
+
+    <app-code-viewer
+      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+      language="html"
+      :code="codes['datepicker:with-input']"
+    ></app-code-viewer>
+  </div>
+
+  <script>
+    return {
+      onMounted() {
+        function setCodes(subcomponent) {
+          $vui._.each($vui.imports, (meta) => {
+            if (subcomponent.detail === meta.fullname)
+              this.codes[meta.fullname] = meta.html;
+          });
+        }
+        window.addEventListener("subcomponentisready", setCodes.bind(this));
+      },
+    };
+  </script>
+</template>

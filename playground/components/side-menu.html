@@ -25,9 +25,7 @@
           </div>
         </div>
 
-        <div
-          :class="`ml-6 ${opens.includes(category) ? 'h-fit visible': 'h-0 invisible'}`"
-        >
+        <div x-show="opens.includes(category)" x-collapse class="ml-6">
           <template
             x-for="item in routes.filter(route => route.category === category)"
             :key="item.path"

@@ -1,0 +1,29 @@
+<script>
+  function setupData() {
+    return {
+      value: "",
+      value2: "",
+    };
+  }
+</script>
+<template
+  x-component:datepicker="basic"
+  x-import="hui:datepicker"
+  x-data="setupData()"
+>
+  <div class="flex gap-10 py-4">
+    <hui-datepicker
+      @change="value = $event.detail"
+      label="Date："
+      defaultValue="2023-03-20"
+    ></hui-datepicker>
+  </div>
+
+  <script>
+    return {
+      onMounted() {
+        this.$dispatch("subcomponentisready", "datepicker:basic");
+      },
+    };
+  </script>
+</template>

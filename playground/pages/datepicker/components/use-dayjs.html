@@ -1,0 +1,186 @@
+<script>
+  function getDays(date) {
+    const days = [];
+    const firstDayInMonth = new Date(date.getFullYear(), date.getMonth(), 0);
+    for (
+      let day = 1;
+      day <= new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+      day++
+    ) {
+      days.push({
+        day: dayjs(firstDayInMonth).add(day, "day").toDate(),
+        text: day,
+      });
+    }
+    return days;
+  }
+  function getRows(date) {
+    const firstDayOfMonth = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      1
+    ).getDay();
+
+    const prevMonthDays = getDays(dayjs(date).add(-1, "month").toDate()).map(
+      (d) => ({ ...d, t: -1 })
+    );
+    const nextMonthDays = getDays(dayjs(date).add(1, "month").toDate()).map(
+      (d) => ({ ...d, t: 1 })
+    );
+
+    let days = [];
+    for (let i = 0; i < firstDayOfMonth; i++) {
+      days.push(prevMonthDays[prevMonthDays.length - firstDayOfMonth + i]);
+    }
+    days = days.concat(getDays(date));
+
+    const rows = [];
+    let cells = [];
+    days.forEach((day, i) => {
+      if (i === 0 || i % 7 !== 0) {
+        cells.push(day);
+      } else {
+        rows.push(cells);
+        cells = [];
+        cells.push(day);
+      }
+
+      if (i === days.length - 1) {
+        rows.push(cells);
+      }
+    });
+
+    const lastRow = rows[rows.length - 1];
+    const lastBlanks = lastRow.length;
+    if (lastBlanks < 7)
+      rows[rows.length - 1] = lastRow.concat(
+        Array(7 - lastRow.length)
+          .fill(0)
+          .map((_, i) => {
+            return nextMonthDays[i];
+          })
+      );
+
+    if (rows.length === 5)
+      rows.push(
+        Array(7)
+          .fill(0)
+          .map((_, i) => {
+            return nextMonthDays[i + 7 - lastBlanks];
+          })
+      );
+
+    return rows;
+  }
+  function getData(date) {
+    const weekNames = dayjs.weekdaysMin();
+    const monthNames = dayjs.monthsShort();
+    const current = dayjs().format("YYYY-MM-DD");
+
+    return {
+      monthNames,
+      weekNames,
+      current,
+      selected: new Date(),
+    };
+  }
+</script>
+<template
+  x-component:datepicker="use-dayjs"
+  x-data="{
+    ...getData(),
+    rows: getRows(new Date()),
+    get currentMonth() { return dayjs(this.current).format('YYYY-MM') },
+    get day() { return dayjs(this.selected).format('YYYY-MM-DD') },
+  }"
+>
+  <div class="w-fit">
+    <div class="flex justify-between items-center">
+      <div class="flex">
+        <div
+          class="p-2 cursor-pointer"
+          x-on:click="$api.changeSection(-1, 'year')"
+        >
+          <i class="uil uil-angle-double-left"></i>
+        </div>
+        <div class="p-2 cursor-pointer" x-on:click="$api.changeSection(-1)">
+          <i class="uil uil-angle-left"></i>
+        </div>
+      </div>
+      <div class="p-2 text-base" x-text="currentMonth"></div>
+      <div class="flex">
+        <div class="p-2 cursor-pointer" x-on:click="$api.changeSection(1)">
+          <i class="uil uil-angle-right"></i>
+        </div>
+        <div
+          class="p-2 cursor-pointer"
+          x-on:click="$api.changeSection(1, 'year')"
+        >
+          <i class="uil uil-angle-double-right"></i>
+        </div>
+      </div>
+    </div>
+    <table class="border-t border-l">
+      <thead>
+        <tr>
+          <template x-for="w in weekNames">
+            <th x-text="w" class="bg-gray-200 border-r border-b p-2"></th>
+          </template>
+        </tr>
+      </thead>
+      <tbody :key="currentMonth">
+        <template x-for="row in rows">
+          <tr>
+            <template x-for="cell in row">
+              <td
+                :class="`bg-white border-r border-b p-2 text-center cursor-pointer ${[-1, 1].includes(cell.t) ? 'text-gray-400' : 'text-black'} ${$api.isSelected(cell.day) ? 'bg-gray-400' : 'bg-white'}`"
+                x-text="cell.text"
+                x-on:click="$api.selectDay(cell.day, cell.t)"
+              ></td>
+            </template>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+
+    <div class="pt-2">
+      selected: <span x-text="day" class="font-bold"></span>
+    </div>
+  </div>
+  <script>
+    return {
+      changeSection(num, type) {
+        return function () {
+          const date = this.current;
+          const nextMonthDay = dayjs(date).add(num, type || "month");
+          this.current = nextMonthDay;
+          this.rows = getRows(nextMonthDay.toDate());
+        };
+      },
+      isSelected(day) {
+        return (
+          dayjs(this.selected).format("YYYYMMDD") ===
+          dayjs(day).format("YYYYMMDD")
+        );
+      },
+      selectDay(day, t = 0) {
+        this.current = day;
+        if ([-1, 1].includes(t)) {
+          const month = dayjs(new Date(day));
+          this.rows = getRows(month.toDate());
+        }
+        function setSelected() {
+          this.selected = day;
+          this.$dispatch("change", {
+            day,
+            text: dayjs(day).format("YYYY-MM-DD"),
+          });
+        }
+        Alpine.nextTick(setSelected.bind(this));
+      },
+      onMounted() {
+        this.$dispatch("subcomponentisready", "datepicker:use-dayjs");
+      },
+    };
+  </script>
+</template>
