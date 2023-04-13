@@ -12,56 +12,70 @@
   x-import="app:code-viewer;menu:basic,multiple-elements,with-popper,with-transition,with-transition-and-popper"
   x-data="{codes: {}}"
 >
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Basic</div>
-    <hr class="text-gray-400" />
-    <div><menu-basic /></div>
+  <app-this-page
+    :items="[
+      {eleId:'basic', name:'Basic'},
+      {eleId:'multi-elements', name:'Multiple Elements'},
+      {eleId:'with-popover', name:'With Popper'},
+      {eleId:'with-transition', name:'With Transition'},
+      {eleId:'with-transition-popover', name:'With Transition And Popper'},
+      {eleId:'page', name:'Page'},
+    ]"
+    :title="'Menu'"
+    class="w-[160px] absolute right-5 top-24 p-1 z-10 bg-white shadow-lg shadow-blue-500/50 rounded"
+  ></app-this-page>
+  <div>
+    <div class="mb-8 mr-40 pt-3" id="basic">
+      <div class="text-4xl pb-2">Basic</div>
+      <hr class="text-gray-400" />
+      <div><menu-basic /></div>
 
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['menu:basic']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Multiple Elements</div>
-    <hr class="text-gray-400" />
-    <div><menu-multiple-elements /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['menu:multiple-elements']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">With Popper</div>
-    <hr class="text-gray-400" />
-    <div><menu-with-popper /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['menu:with-popper']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">With Transition</div>
-    <hr class="text-gray-400" />
-    <div><menu-with-transition /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['menu:with-transition']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">With Transition And Popper</div>
-    <hr class="text-gray-400" />
-    <div><menu-with-transition-and-popper /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['menu:with-transition-and-popper']"
-    ></app-code-viewer>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['menu:basic']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="multi-elements">
+      <div class="text-4xl pb-2">Multiple Elements</div>
+      <hr class="text-gray-400" />
+      <div><menu-multiple-elements /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['menu:multiple-elements']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="with-popover">
+      <div class="text-4xl pb-2">With Popper</div>
+      <hr class="text-gray-400" />
+      <div><menu-with-popper /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['menu:with-popper']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="with-transition">
+      <div class="text-4xl pb-2">With Transition</div>
+      <hr class="text-gray-400" />
+      <div><menu-with-transition /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['menu:with-transition']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="with-transition-popover">
+      <div class="text-4xl pb-2">With Transition And Popper</div>
+      <hr class="text-gray-400" />
+      <div><menu-with-transition-and-popper /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['menu:with-transition-and-popper']"
+      ></app-code-viewer>
+    </div>
   </div>
   <script>
     return {

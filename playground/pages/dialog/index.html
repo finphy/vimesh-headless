@@ -9,30 +9,42 @@
 
 <template
   x-component:page="dialog-index"
-  x-import="app:code-viewer;dialog:basic,slide-over"
+  x-import="app:code-viewer,this-page;dialog:basic,slide-over"
   x-data="{codes: {}}"
 >
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Basic</div>
-    <hr class="text-gray-400" />
-    <div><dialog-basic /></div>
+  <app-this-page
+    :items="[
+      {eleId:'basic', name:'Basic'},
+      {eleId:'slide-over', name:'Slide Over'},
+      {eleId:'page', name:'Page'},
+    ]"
+    :title="'Dialog'"
+    class="w-[160px] absolute right-5 top-24 p-1 z-10 bg-white shadow-lg shadow-blue-500/50 rounded"
+  ></app-this-page>
+  <div>
+    <div class="mb-8 mr-40 pt-3" id="basic">
+      <div class="text-4xl pb-2">Basic</div>
+      <hr class="text-gray-400" />
+      <div><dialog-basic /></div>
 
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['dialog:basic']"
-    ></app-code-viewer>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['dialog:basic']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="slide-over">
+      <div class="text-4xl pb-2">Slide Over</div>
+      <hr class="text-gray-400" />
+      <div><dialog-slide-over /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['dialog:slide-over']"
+      ></app-code-viewer>
+    </div>
   </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Slide Over</div>
-    <hr class="text-gray-400" />
-    <div><dialog-slide-over /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['dialog:slide-over']"
-    ></app-code-viewer>
-  </div>
+
   <script>
     return {
       onMounted() {

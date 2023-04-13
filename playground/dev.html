@@ -1,113 +1,117 @@
-<head>
-    <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
-    <link
-        rel="stylesheet"
-        href="https://unicons.iconscout.com/release/v2.0.0/css/unicons.css"
-    />
-    <script src="/node_modules/@vimesh/style/dist/vs.dev.js"></script>
-    <script src="/node_modules/@vimesh/ui/dist/vui.dev.js"></script>
-    <script src="/node_modules/alpinejs/dist/cdn.js" defer></script>
-    <script src="/node_modules/@alpinejs/collapse/dist/cdn.js"></script>
-    <script src="/node_modules/universal-router/universal-router.min.js"></script>
-    <script src="/node_modules/dayjs/plugin/localeData.js"></script>
-    <script src="/node_modules/dayjs/dayjs.min.js"></script>
-    <script src="/node_modules/dayjs/locale/zh-cn.js"></script>
-    
-    <script>
-        const DEBUG = true
-        $vui.config.debug = DEBUG
-        $vui.config.importMap = {
-            "hui": '../components/${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
-            "app": './components/${path}${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
-            "page": './pages/${path}${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
-        }
-        let root = {
-            $route: {},
-            get isHome() { return this.$route.page === 'home' },
-            categories: [['Home', 'home'], ['Components', 'toggle-off']],
-            routes: [
-                { name: 'Home', path: '/index', page: 'home', category: 'Home' },
-                { name: 'Listbox', path: '/listbox/index', page: 'listbox/index', category: 'Components' },
-                { name: 'Radio Group', path: '/radio-group/basic', page: 'radio-group/basic', category: 'Components'  },
-                { name: 'Switch', path: '/switch/basic', page: 'switch/basic', category: 'Components'  },
-                { name: 'Tabs', path: '/tabs/basic', page: 'tabs/basic', category: 'Components' },
-                { name: 'Combobox', path: '/combobox/index', page: 'combobox/index', category: 'Components'  },
-                { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
-                { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
-                { name: 'Dialog', path: '/dialog/index', page: 'dialog/index', category: 'Components'  },
-                { name: 'Datepicker', path: '/datepicker/index', page: 'datepicker/index', category: 'Components' },
-                { name: 'Something Wrong!', path: '(.*)', page: 'home', hidden: true }
-            ]
-        }
-
-        dayjs.extend(dayjs_plugin_localeData);
-        dayjs.locale('zh-cn');
-    </script>
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
-</head>
-
-<body x-cloak x-import="app:header,side-menu,code-viewer,key-caster"
-    class="h-full w-full font-sans text-gray-900 antialiased flex flex-col" x-data="root">
-    <app-header class="flex-none h-16 px-4 py-4 flex"></app-header>
-    <div class="flex-1 flex">
-        <app-side-menu class="w-74 flex-none" x-show="!isHome"></app-side-menu>
-        <div class="h-full overflow-auto p-3"  style="height: calc(100vh - 60px);">
-            <app-router-view></app-router-view>
-
-            <div class="mb-8">
-                <div x-show="!isHome" class="text-4xl pb-2">Page</div>
-                <hr class="text-gray-400" />
-                <app-code-viewer x-show="!isHome" class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 my-4 text-sm"
-                language="html" :code="$route.code"></app-code-viewer>
-            </div>
-  
-        </div>
-    </div>
-    <app-key-caster></app-key-caster>
-    <template x-component:app="router-view" x-shtml="$api && $api.pageContent || ''"
-        x-import:dynamic="$api && $api.pageToImport">
+<!DOCTYPE html>
+<html class="overflow-hidden">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+        <link
+            rel="stylesheet"
+            href="https://unicons.iconscout.com/release/v2.0.0/css/unicons.css"
+        />
+        <script src="/node_modules/@vimesh/style/dist/vs.dev.js"></script>
+        <script src="/node_modules/@vimesh/ui/dist/vui.dev.js"></script>
+        <script src="/node_modules/alpinejs/dist/cdn.js" defer></script>
+        <script src="/node_modules/@alpinejs/collapse/dist/cdn.js"></script>
+        <script src="/node_modules/universal-router/universal-router.min.js"></script>
+        <script src="/node_modules/dayjs/plugin/localeData.js"></script>
+        <script src="/node_modules/dayjs/dayjs.min.js"></script>
+        <script src="/node_modules/dayjs/locale/zh-cn.js"></script>
+        
         <script>
-            return {
-                router: null,
-                pageContent: '',
-                pageToImport: null,
-                onUrlChange() {
-                    let match = window.location.href.match(/#(.*)$/)
-                    let fragment = match ? match[1] : ''
-                    this.router.resolve({ pathname: fragment }).then(page => {
-                        if (page) {
-                            let component = `page-${page.replace('/', '-')}`
-                            this.pageContent = `<${component}></${component}>`
-                            this.pageToImport = `page:${page}`
-                            $vui.import(this.pageToImport).then(() => {
-                                $vui._.each($vui.imports, meta => {
-                                    if (meta.fullname === this.pageToImport) {
-                                        this.$route.code = meta.html
-                                    }
-                                })
-                            })
-                        }
-                    })
-                },
-                onMounted() {
-                    this.router = new UniversalRouter(this.routes, {
-                        context: { self: this },
-                        resolveRoute(context, params) {
-                            context.self.$route = { params, ...context.route }
-                            if (typeof context.route.action === 'function') {
-                                return context.route.action(context, params)
-                            }
-                            return context.route.page
-                        }
-                    })
-                    this.onUrlChange()
-                    window.addEventListener('popstate', e => this.onUrlChange())
-                }
+            const DEBUG = true
+            $vui.config.debug = DEBUG
+            $vui.config.importMap = {
+                "hui": '../components/${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
+                "app": './components/${path}${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
+                "page": './pages/${path}${component}.html' + (DEBUG ? '?v=' + new Date().valueOf() : '?v=0.1'),
             }
+            let root = {
+                $route: {},
+                get isHome() { return this.$route.page === 'home' },
+                categories: [['Home', 'home'], ['Components', 'toggle-off']],
+                routes: [
+                    { name: 'Home', path: '/index', page: 'home', category: 'Home' },
+                    { name: 'Listbox', path: '/listbox/index', page: 'listbox/index', category: 'Components' },
+                    { name: 'Radio Group', path: '/radio-group/basic', page: 'radio-group/basic', category: 'Components'  },
+                    { name: 'Switch', path: '/switch/basic', page: 'switch/basic', category: 'Components'  },
+                    { name: 'Tabs', path: '/tabs/basic', page: 'tabs/basic', category: 'Components' },
+                    { name: 'Combobox', path: '/combobox/index', page: 'combobox/index', category: 'Components'  },
+                    { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
+                    { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
+                    { name: 'Dialog', path: '/dialog/index', page: 'dialog/index', category: 'Components'  },
+                    { name: 'Datepicker', path: '/datepicker/index', page: 'datepicker/index', category: 'Components' },
+                    { name: 'Something Wrong!', path: '(.*)', page: 'home', hidden: true }
+                ]
+            }
+
+            dayjs.extend(dayjs_plugin_localeData);
+            dayjs.locale('zh-cn');
         </script>
-    </template>
-</body>
+        <style>
+            [x-cloak] {
+                display: none !important;
+            }
+        </style>
+    </head>
+
+    <body x-cloak x-import="app:header,side-menu,code-viewer,key-caster"
+        class="h-full w-full font-sans text-gray-900 antialiased flex flex-col" x-data="root">
+        <app-header class="flex-none h-16 px-4 py-4 flex"></app-header>
+        <div class="flex-1 flex">
+            <app-side-menu class="w-74 flex-none" x-show="!isHome"></app-side-menu>
+            <div id="main" class="h-full overflow-auto p-3 pt-0"  style="height: calc(100vh - 60px);">
+                <app-router-view></app-router-view>
+
+                <div class="mb-8 pt-3" id="page">
+                    <div x-show="!isHome" class="text-4xl pb-2">Page</div>
+                    <hr class="text-gray-400" />
+                    <app-code-viewer x-show="!isHome" class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+                    language="html" :code="$route.code"></app-code-viewer>
+                </div>
+    
+            </div>
+        </div>
+        <app-key-caster></app-key-caster>
+        <template x-component:app="router-view" x-shtml="$api && $api.pageContent || ''"
+            x-import:dynamic="$api && $api.pageToImport">
+            <script>
+                return {
+                    router: null,
+                    pageContent: '',
+                    pageToImport: null,
+                    onUrlChange() {
+                        let match = window.location.href.match(/#(.*)$/)
+                        let fragment = match ? match[1] : ''
+                        this.router.resolve({ pathname: fragment }).then(page => {
+                            if (page) {
+                                let component = `page-${page.replace('/', '-')}`
+                                this.pageContent = `<${component}></${component}>`
+                                this.pageToImport = `page:${page}`
+                                $vui.import(this.pageToImport).then(() => {
+                                    $vui._.each($vui.imports, meta => {
+                                        if (meta.fullname === this.pageToImport) {
+                                            this.$route.code = meta.html
+                                        }
+                                    })
+                                })
+                            }
+                        })
+                    },
+                    onMounted() {
+                        this.router = new UniversalRouter(this.routes, {
+                            context: { self: this },
+                            resolveRoute(context, params) {
+                                context.self.$route = { params, ...context.route }
+                                if (typeof context.route.action === 'function') {
+                                    return context.route.action(context, params)
+                                }
+                                return context.route.page
+                            }
+                        })
+                        this.onUrlChange()
+                        window.addEventListener('popstate', e => this.onUrlChange())
+                    }
+                }
+            </script>
+        </template>
+    </body>
+</html>

@@ -1,70 +1,83 @@
 <script>
-    $vui.config.importMap = {
-      combobox:
-        "./pages/${path}combobox/components/${component}.html" +
-        (DEBUG ? "?v=" + new Date().valueOf() : "?v=0.1"),
-      ...$vui.config.importMap,
-    };
-  </script>
-  
-  <template
-    x-component:page="combobox-index"
-    x-import="app:code-viewer;combobox:basic,command-palette,command-palette-group,multi-select"
-    x-data="{codes: {}}"
-  >
-    <div class="mb-8">
+  $vui.config.importMap = {
+    combobox:
+      "./pages/${path}combobox/components/${component}.html" +
+      (DEBUG ? "?v=" + new Date().valueOf() : "?v=0.1"),
+    ...$vui.config.importMap,
+  };
+</script>
+
+<template
+  x-component:page="combobox-index"
+  x-import="app:code-viewer,this-page;combobox:basic,command-palette,command-palette-group,multi-select"
+  x-data="{codes: {}}"
+>
+  <app-this-page
+    :items="[
+    {eleId:'basic', name:'Basic'},
+    {eleId:'command-palette', name:'Palette'},
+    {eleId:'command-palette-group', name:'Palette Group'},
+    {eleId:'multi-select', name:'Multi Select'},
+    {eleId:'page', name:'Page'},
+  ]"
+    :title="'Combobox'"
+    class="w-[160px] absolute right-5 top-24 p-1 z-10 bg-white shadow-lg shadow-blue-500/50 rounded"
+  ></app-this-page>
+
+  <div>
+    <div class="mb-8 mr-40 pt-3" id="basic">
       <div class="text-4xl pb-2">Basic</div>
       <hr class="text-gray-400" />
       <div><combobox-basic /></div>
-  
+
       <app-code-viewer
-        class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
         language="html"
         :code="codes['combobox:basic']"
       ></app-code-viewer>
     </div>
-    <div class="mb-8">
+    <div class="mb-8 pt-3" id="command-palette">
       <div class="text-4xl pb-2">Command Palette</div>
       <hr class="text-gray-400" />
       <div><combobox-command-palette /></div>
       <app-code-viewer
-        class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
         language="html"
         :code="codes['combobox:command-palette']"
       ></app-code-viewer>
     </div>
-    <div class="mb-8">
+    <div class="mb-8 pt-3" id="command-palette-group">
       <div class="text-4xl pb-2">Command Palette Group</div>
       <hr class="text-gray-400" />
       <div><combobox-command-palette-group /></div>
       <app-code-viewer
-        class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
         language="html"
         :code="codes['combobox:command-palette-group']"
       ></app-code-viewer>
     </div>
-    <div class="mb-8">
+    <div class="mb-8 pt-3" id="multi-select">
       <div class="text-4xl pb-2">Multi Select</div>
       <hr class="text-gray-400" />
       <div><combobox-multi-select /></div>
       <app-code-viewer
-        class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
         language="html"
         :code="codes['combobox:multi-select']"
       ></app-code-viewer>
     </div>
-    <script>
-      return {
-        onMounted() {
-          function setCodes(subcomponent) {
-            $vui._.each($vui.imports, (meta) => {
-              if (subcomponent.detail === meta.fullname)
-                this.codes[meta.fullname] = meta.html;
-            });
-          }
-          window.addEventListener("subcomponentisready", setCodes.bind(this));
-        },
-      };
-    </script>
-  </template>
-  
+  </div>
+  <script>
+    return {
+      onMounted() {
+        function setCodes(subcomponent) {
+          $vui._.each($vui.imports, (meta) => {
+            if (subcomponent.detail === meta.fullname)
+              this.codes[meta.fullname] = meta.html;
+          });
+        }
+        window.addEventListener("subcomponentisready", setCodes.bind(this));
+      },
+    };
+  </script>
+</template>

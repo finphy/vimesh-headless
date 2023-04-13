@@ -9,39 +9,52 @@
 
 <template
   x-component:page="listbox-index"
-  x-import="app:code-viewer;listbox:basic,multi-select,multi-elements"
+  x-import="app:code-viewer,this-page;listbox:basic,multi-select,multi-elements"
   x-data="{codes: {}}"
 >
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Basic</div>
-    <hr class="text-gray-400" />
-    <div><listbox-basic /></div>
+  <app-this-page
+    :items="[
+    {eleId:'basic', name:'Basic'},
+    {eleId:'multi-select', name:'Multi Select'},
+    {eleId:'multi-elements', name:'Multi Elements'},
+    {eleId:'page', name:'Page'},
+  ]"
+    :title="'Listbox'"
+    class="w-[160px] absolute right-5 top-24 p-1 z-10 bg-white shadow-lg shadow-blue-500/50 rounded"
+  ></app-this-page>
 
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['listbox:basic']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Multi Select</div>
-    <hr class="text-gray-400" />
-    <div><listbox-multi-select /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['listbox:multi-select']"
-    ></app-code-viewer>
-  </div>
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Multi Elements</div>
-    <hr class="text-gray-400" />
-    <div><listbox-multi-elements /></div>
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['listbox:multi-elements']"
-    ></app-code-viewer>
+  <div>
+    <div class="mb-8 mr-40 pt-3" id="basic">
+      <div class="text-4xl pb-2">Basic</div>
+      <hr class="text-gray-400" />
+      <div><listbox-basic /></div>
+
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['listbox:basic']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="multi-select">
+      <div class="text-4xl pb-2">Multi Select</div>
+      <hr class="text-gray-400" />
+      <div><listbox-multi-select /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['listbox:multi-select']"
+      ></app-code-viewer>
+    </div>
+    <div class="mb-8 pt-3" id="multi-elements">
+      <div class="text-4xl pb-2">Multi Elements</div>
+      <hr class="text-gray-400" />
+      <div><listbox-multi-elements /></div>
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['listbox:multi-elements']"
+      ></app-code-viewer>
+    </div>
   </div>
   <script>
     return {

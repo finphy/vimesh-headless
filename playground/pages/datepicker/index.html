@@ -9,45 +9,56 @@
 
 <template
   x-component:page="datepicker-index"
-  x-import="app:code-viewer;datepicker:basic,use-dayjs,with-input"
+  x-import="app:code-viewer,this-page;datepicker:basic,use-dayjs,with-input"
   x-data="{codes: {}}"
 >
-  <div class="mb-8">
-    <div class="text-4xl pb-2">Basic</div>
-    <hr class="text-gray-400" />
-    <div class="p-4"><datepicker-basic /></div>
+  <app-this-page
+    :items="[
+      {eleId:'basic', name:'Basic'},
+      {eleId:'with-dayjs', name:'With Dayjs'},
+      {eleId:'with-popover', name:'With Popover'},
+    ]"
+    :title="'Datepicker'"
+    class="w-[160px] absolute right-5 top-24 p-1 z-10 bg-white shadow-lg shadow-blue-500/50 rounded"
+  ></app-this-page>
 
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['datepicker:basic']"
-    ></app-code-viewer>
+  <div>
+    <div class="mb-8 mr-40 pt-3" id="basic">
+      <div class="text-4xl pb-2">Basic</div>
+      <hr class="text-gray-400" />
+      <div class="p-4"><datepicker-basic /></div>
+
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['datepicker:basic']"
+      ></app-code-viewer>
+    </div>
+
+    <div class="mb-8 pt-3" id="with-dayjs">
+      <div class="text-4xl pb-2">With Dayjs</div>
+      <hr class="text-gray-400" />
+      <div class="p-4"><datepicker-use-dayjs /></div>
+
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['datepicker:use-dayjs']"
+      ></app-code-viewer>
+    </div>
+
+    <div class="mb-8 pt-3" id="with-popover">
+      <div class="text-4xl pb-2">With Dayjs & Popover</div>
+      <hr class="text-gray-400" />
+      <div><datepicker-with-input /></div>
+
+      <app-code-viewer
+        class="flex-none overflow-y-auto bg-gray-700 p-2 m-1 rounded-md mx-8 my-4 text-xs"
+        language="html"
+        :code="codes['datepicker:with-input']"
+      ></app-code-viewer>
+    </div>
   </div>
-
-  <div class="mb-8">
-    <div class="text-4xl pb-2">With Dayjs</div>
-    <hr class="text-gray-400" />
-    <div class="p-4"><datepicker-use-dayjs /></div>
-
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['datepicker:use-dayjs']"
-    ></app-code-viewer>
-  </div>
-
-  <div class="mb-8">
-    <div class="text-4xl pb-2">With Dayjs & Popover</div>
-    <hr class="text-gray-400" />
-    <div><datepicker-with-input /></div>
-
-    <app-code-viewer
-      class="flex-none h-64 overflow-y-auto bg-gray-700 m-1 rounded-md mx-8 text-sm"
-      language="html"
-      :code="codes['datepicker:with-input']"
-    ></app-code-viewer>
-  </div>
-
   <script>
     return {
       onMounted() {

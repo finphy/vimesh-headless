@@ -1,0 +1,37 @@
+<template
+  x-component:app="this-page"
+  x-data="{
+    get items(){return this.$prop('items', [])},
+    get title(){return this.$prop('title', '')},
+    selected: '',
+}"
+>
+  <div class="p-2">
+    <div class="text-sm text-center">On this page</div>
+    <div x-text="title" class="text-lg font-bold"></div>
+    <template x-for="item in items" :key="item.eleId">
+      <div
+        class="rounded-full hover:bg-gray-200 py-1 px-3 m-1 cursor-pointer text-sm border border-white"
+        :class="{
+            'border-slate-200': selected === item.eleId
+        }"
+        x-text="item.name"
+        @click="$api && $api.click(item.eleId)"
+      ></div>
+    </template>
+  </div>
+  <script>
+    return {
+      click(eleId) {
+        const ele = document.getElementById(eleId);
+        ele.scrollIntoView({
+          behavior: "smooth",
+        });
+        this.selected = eleId;
+      },
+      onMounted() {
+        this.selected = this.items.length ? this.items[0].eleId : "";
+      },
+    };
+  </script>
+</template>

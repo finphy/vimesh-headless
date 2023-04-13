@@ -2,16 +2,27 @@
 <script>
   function setupData() {
     return {
-      value: "Select date",
+      value1: "Select date",
       trigger1: null,
       container1: null,
+      trigger2: null,
+      container2: null,
+      value2: "Select date",
       init() {
         $vui.effect(() => {
-          if (!this.trigger1 || !this.container1) return;
-          Popper.createPopper(this.trigger1, this.container1, {
-            placement: "bottom-start",
-            strategy: "fixed",
-          });
+          if (!this.trigger1 || !this.container1) {
+            Popper.createPopper(this.trigger1, this.container1, {
+              placement: "bottom-start",
+              strategy: "fixed",
+            });
+          }
+
+          if (!this.trigger2 || !this.container2) {
+            Popper.createPopper(this.trigger2, this.container2, {
+              placement: "bottom-start",
+              strategy: "fixed",
+            });
+          }
         });
       },
     };
@@ -23,27 +34,48 @@
   x-data="setupData()"
   x-init="[init()]"
 >
-  <div class="p-12">
+  <div class="p-12 flex gap-10">
     <hui-popover class="relative">
       <hui-popover-button
         x-init="trigger1=$el"
-        class="border-2 border-transparent bg-gray-300 px-3 py-2 focus:border-blue-900 focus:outline-none"
+        class="border-transparent bg-gray-300 px-3 py-2"
       >
-        <span x-text="value"></span>
+        <span x-text="value1"></span>
       </hui-popover-button>
       <hui-popover-panel
         x-init="container1=$el"
         focus
-        class="absolute flex flex-col border-2 border-blue-900 bg-gray-100"
+        class="absolute flex flex-col bg-gray-100"
       >
-        <div class="px-4" @click.away="$dispatch('close')">
+        <div class="z-10" @click.away="$dispatch('close')">
           <datepicker-use-dayjs
-            @change="value = $event.detail.text; $dispatch('close');"
+            @change="value1 = $event.detail.text; $dispatch('close');"
           ></datepicker-use-dayjs>
         </div>
       </hui-popover-panel>
     </hui-popover>
+
+    <hui-popover class="relative">
+      <hui-popover-button
+        x-init="trigger2=$el"
+        class="border-transparent bg-gray-300 px-3 py-2"
+      >
+        <span x-text="value2"></span>
+      </hui-popover-button>
+      <hui-popover-panel
+        x-init="container2=$el"
+        focus
+        class="absolute flex flex-col bg-gray-100"
+      >
+        <datepicker-use-dayjs
+          class="z-10 bg-transparent"
+          @click.away="$dispatch('close')"
+          @change="value2 = $event.detail.text; $dispatch('close');"
+        ></datepicker-use-dayjs>
+      </hui-popover-panel>
+    </hui-popover>
   </div>
+
   <script>
     return {
       onMounted() {
