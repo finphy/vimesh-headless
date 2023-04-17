@@ -34,6 +34,7 @@
                     { name: 'Radio Group', path: '/radio-group/basic', page: 'radio-group/basic', category: 'Components'  },
                     { name: 'Switch', path: '/switch/basic', page: 'switch/basic', category: 'Components'  },
                     { name: 'Tabs', path: '/tabs/basic', page: 'tabs/basic', category: 'Components' },
+                    { name: 'Table', path: '/table/index', page: 'table/index', category: 'Components' },
                     { name: 'Combobox', path: '/combobox/index', page: 'combobox/index', category: 'Components'  },
                     { name: 'Menu', path: '/menu/index', page: 'menu/index', category: 'Components'  },
                     { name: 'Popover', path: '/popover/basic', page: 'popover/basic', category: 'Components'  },
@@ -58,7 +59,7 @@
         <app-header class="flex-none h-16 px-4 py-4 flex"></app-header>
         <div class="flex-1 flex">
             <app-side-menu class="w-74 flex-none" x-show="!isHome"></app-side-menu>
-            <div id="main" class="h-full overflow-auto p-3 pt-0"  style="height: calc(100vh - 60px);">
+            <div id="main" class="w-full h-full overflow-auto p-3 pt-0"  style="height: calc(100vh - 60px);">
                 <app-router-view></app-router-view>
 
                 <div class="mb-8 pt-3" id="page">
